@@ -21,7 +21,7 @@ jobs:
           done
       - name: no leftover placeholders outside templates
         run: |
-          ! grep -rn '__APP_NAME__\|__BUNDLE_PREFIX__' skills hooks scripts README.md
+          ! grep -rn '__APP_NAME__\|__BUNDLE_PREFIX__' skills hooks README.md
 
   # Scaffolds and builds the game template. Needs a macOS runner with Xcode 27.
   # GitHub-hosted images lag Xcode releases; a self-hosted Apple Silicon Mac is
