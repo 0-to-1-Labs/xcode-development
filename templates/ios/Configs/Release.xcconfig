@@ -1,0 +1,2 @@
+// Release build settings. Local.xcconfig is gitignored and holds DEVELOPMENT_TEAM.
+#include? "Local.xcconfig"

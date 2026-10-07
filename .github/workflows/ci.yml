@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint:
+    name: shellcheck and manifests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install shellcheck and jq
+        run: sudo apt-get update && sudo apt-get install -y shellcheck jq
+      - name: shellcheck
+        run: shellcheck -S warning scripts/*.sh scripts/app/*.sh scripts/remote-mac/*.sh hooks/*.sh templates/ios/scripts/*.sh 2>/dev/null || shellcheck -S warning scripts/*.sh scripts/app/*.sh scripts/remote-mac/*.sh hooks/*.sh
+      - name: validate JSON
+        run: |
+          for f in .claude-plugin/plugin.json .mcp.json hooks/hooks.json templates/workspace/.claude/settings.json; do
+            jq -e . "$f" >/dev/null && echo "ok $f"
+          done
+      - name: no leftover placeholders outside templates
+        run: |
+          ! grep -rn '__APP_NAME__\|__BUNDLE_PREFIX__' skills hooks scripts README.md
+
+  # Scaffolds and builds the game template. Needs a macOS runner with Xcode 27.
+  # GitHub-hosted images lag Xcode releases; a self-hosted Apple Silicon Mac is
+  # the reliable choice. Enable by removing `if: false`.
+  template-build:
+    name: scaffold and build template
+    if: false
+    runs-on: [self-hosted, macOS]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Tools
+        run: brew install xcodegen swiftlint xcbeautify swift-format lefthook jq
+      - name: Scaffold
+        run: |
+          mkdir -p /tmp/ws && cd /tmp/ws
+          "$GITHUB_WORKSPACE/scripts/init.sh" --bundle-prefix ci.test --no-git
+          "$GITHUB_WORKSPACE/scripts/new-app.sh" CiSample --kind game --display "CI Sample"
+      - name: Check
+        run: cd /tmp/ws/apps/CiSample && make check

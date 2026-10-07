@@ -1,0 +1,17 @@
+# Workspace hooks. Apps have their own lefthook.yml.
+pre-commit:
+  commands:
+    no-apps:
+      run: |
+        if git diff --cached --name-only | grep -E '^apps/' | grep -v '^apps/README.md$'; then
+          echo "apps/* belongs to per-app repos, not the workspace."; exit 1; fi
+    no-secrets:
+      run: |
+        if git diff --cached --name-only | grep -E '(^|/)(\.env|.*\.p12|.*\.mobileprovision|Local\.xcconfig)$'; then
+          echo "Refusing to commit secrets."; exit 1; fi
+commit-msg:
+  commands:
+    conventional:
+      run: |
+        head -1 {1} | grep -qE '^(feat|fix|chore|docs|test|refactor|perf|build|ci|style|revert)(\([a-z0-9-]+\))?!?: .{1,72}$' \
+          || { echo "Use Conventional Commits, e.g. 'docs(sdlc): add playtest step'"; exit 1; }

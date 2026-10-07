@@ -1,0 +1,30 @@
+# CI for an xcode-development app. Runs on a shell runner tagged `ios` on an
+# Apple Silicon Mac with Xcode 27 and a logged-in GUI session.
+# Simulator builds only: no signing, no secrets.
+stages: [check]
+variables:
+  GIT_DEPTH: "1"
+
+.ios: &ios
+  tags: [ios]
+  timeout: 40m
+  before_script:
+    - xcodebuild -version
+    - make generate
+
+lint:
+  <<: *ios
+  stage: check
+  script: [make lint]
+
+test-iphone:
+  <<: *ios
+  stage: check
+  script: [make test]
+  artifacts: { when: always, paths: [build/results], expire_in: 1 week }
+
+test-ipad:
+  <<: *ios
+  stage: check
+  script: [make test-ipad]
+  artifacts: { when: always, paths: [build/results], expire_in: 1 week }

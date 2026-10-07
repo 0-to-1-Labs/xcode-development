@@ -1,0 +1,36 @@
+# CI for an xcode-development app. Simulator builds only: no signing, no secrets.
+# GitHub-hosted macOS images lag Xcode releases. A self-hosted Apple Silicon Mac
+# with Xcode 27 and a logged-in GUI session is the reliable choice:
+#   runs-on: [self-hosted, macOS]
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: macos-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [test, test-ipad]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select newest Xcode
+        run: |
+          latest=$(ls -d /Applications/Xcode*.app | sort -V | tail -1)
+          sudo xcode-select -s "$latest" && xcodebuild -version
+      - name: Tools
+        run: brew install xcodegen swiftlint xcbeautify swift-format jq
+      - name: Lint
+        run: make lint
+      - name: ${{ matrix.target }}
+        run: make ${{ matrix.target }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: results-${{ matrix.target }}
+          path: build/results
+          retention-days: 7

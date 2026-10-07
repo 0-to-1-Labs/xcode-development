@@ -1,0 +1,59 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(make:*)",
+      "Bash(xcodebuild:*)",
+      "Bash(xcrun simctl:*)",
+      "Bash(xcrun devicectl:*)",
+      "Bash(xcrun xcresulttool:*)",
+      "Bash(xcrun mcp-server status:*)",
+      "Bash(xcrun mcp-server open:*)",
+      "Bash(xcrun agent:*)",
+      "Bash(xcodegen:*)",
+      "Bash(swiftlint:*)",
+      "Bash(swift format:*)",
+      "Bash(xcbeautify:*)",
+      "Bash(lefthook:*)",
+      "Bash(jq:*)",
+      "Bash(open -a Simulator:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git switch:*)",
+      "Bash(git branch:*)"
+    ],
+    "ask": [
+      "Bash(git push:*)",
+      "Bash(gh repo create:*)",
+      "Bash(glab repo create:*)",
+      "Bash(ssh:*)",
+      "Bash(rsync:*)",
+      "Bash(brew install:*)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(**/Configs/Local.xcconfig)",
+      "Read(~/.config/xcode-development/env)",
+      "Read(**/*.p12)",
+      "Read(**/*.mobileprovision)",
+      "Read(**/AuthKey_*.p8)",
+      "Bash(security:*)",
+      "Bash(sudo:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(xcrun simctl erase all:*)",
+      "Bash(xcrun simctl delete all:*)",
+      "Bash(xcrun mcp-server enable:*)",
+      "Bash(xcrun mcp-server disable:*)",
+      "Bash(xcrun mcp-server approve:*)",
+      "Bash(xcrun mcp-server allow-folder:*)",
+      "Bash(xcrun mcp-server clear-permissions:*)",
+      "Bash(xcrun mcp-server reset-all:*)"
+    ]
+  },
+  "enableAllProjectMcpServers": true
+}

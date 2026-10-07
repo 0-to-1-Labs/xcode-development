@@ -1,0 +1,26 @@
+{
+  "name": "xcode-development",
+  "displayName": "Xcode Development",
+  "version": "1.0.0",
+  "description": "An opinionated factory for personal and family Apple apps built with Claude Code and Xcode 27: /xcode-development:init scaffolds a workspace, new-app creates an XcodeGen-based iPhone/iPad app or SpriteKit game with tests, lint, hooks, and CI, and skills cover build, simulator, device install, TDD loop, review, and remote Macs. Privacy-first defaults, free Personal Team signing, Xcode 27 MCP tools.",
+  "author": {
+    "name": "John P. Sasser"
+  },
+  "homepage": "https://github.com/0-to-1-Labs/xcode-development",
+  "repository": "https://github.com/0-to-1-Labs/xcode-development",
+  "license": "MIT",
+  "keywords": [
+    "xcode",
+    "ios",
+    "ipados",
+    "swift",
+    "swiftui",
+    "spritekit",
+    "xcodegen",
+    "swift-testing",
+    "simulator",
+    "mcp",
+    "family",
+    "games"
+  ]
+}

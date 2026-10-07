@@ -1,0 +1,26 @@
+# Git hooks. Install with `make hooks`. Skip once with LEFTHOOK=0 git commit.
+pre-commit:
+  parallel: true
+  commands:
+    swift-format:
+      glob: "*.swift"
+      run: swift format lint --strict {staged_files}
+    swiftlint:
+      glob: "*.swift"
+      run: swiftlint lint --strict --quiet {staged_files}
+    no-secrets:
+      run: |
+        if git diff --cached --name-only | grep -E '(^|/)(\.env|.*\.p12|.*\.mobileprovision|Local\.xcconfig)$'; then
+          echo "Refusing to commit secrets or local signing config."; exit 1; fi
+
+commit-msg:
+  commands:
+    conventional:
+      run: |
+        head -1 {1} | grep -qE '^(feat|fix|chore|docs|test|refactor|perf|build|ci|style|revert)(\([a-z0-9-]+\))?!?: .{1,72}$' \
+          || { echo "Commit message must follow Conventional Commits, e.g. 'feat(game): add jump'"; exit 1; }
+
+pre-push:
+  commands:
+    unit-tests:
+      run: make test-unit

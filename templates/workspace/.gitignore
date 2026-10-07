@@ -1,0 +1,21 @@
+# Each app under apps/ is an independent git repo. This workspace never tracks app code.
+apps/*
+!apps/README.md
+
+.DS_Store
+._*
+build/
+DerivedData/
+*.xcodeproj
+*.xcresult
+.build/
+.swiftpm/
+
+.env
+.env.*
+!.env.example
+*.p12
+*.mobileprovision
+*.cer
+AuthKey_*.p8
+.claude/settings.local.json
